@@ -165,40 +165,50 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         userFullNameView.setError(null);
 
         // Store values at the time of the login attempt.
-        String useremail = userEmailView.getText().toString();
-        String password = userPasswordView.getText().toString();
-        String confirmPassword = userConfirmPasswordView.getText().toString();
-        String username = userNameView.getText().toString();
-        String fullName = userFullNameView.getText().toString();
+        String userEmail = userEmailView.getText().toString();
+        String userPassword = userPasswordView.getText().toString();
+        String userConfirmPassword = userConfirmPasswordView.getText().toString();
+        String userName = userNameView.getText().toString();
+        String userFullName = userFullNameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        // Check for a valid userPassword, if the user entered one.
+        if (!isUserPasswordValid(userPassword)) {
             userPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = userPasswordView;
             cancel = true;
+        } else if (!isUserNameValid(userName)) {
+            userNameView.setError(getString(R.string.error_invalid_email));
+            focusView = userNameView;
+            cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        // Check for a valid userEmail address.
+        if (TextUtils.isEmpty(userEmail)) {
             userEmailView.setError(getString(R.string.error_field_required));
             focusView = userEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(userEmail)) {
             userEmailView.setError(getString(R.string.error_invalid_email));
             focusView = userEmailView;
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(fullName)) {
+        if(!(userConfirmPassword.equals(userPassword))) {
+            userConfirmPasswordView.setError(getString(R.string.passwords_do_not_match));
+            focusView = userConfirmPasswordView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(userFullName)) {
             userFullNameView.setError(getString(R.string.error_field_required));
             focusView = userFullNameView;
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(userName)) {
             userNameView.setError(getString(R.string.error_field_required));
             focusView = userNameView;
             cancel = true;
@@ -212,7 +222,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(userEmail, userPassword);
             mAuthTask.execute((Void) null);
         }
     }
@@ -225,6 +235,15 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    //  TODO: Check userName
+    private boolean isUserNameValid(String userName) {
+        return true;
+    }
+    //  TODO: Check userPassword
+    private boolean isUserPasswordValid(String userPassword) {
+        return true;
     }
 
     /**

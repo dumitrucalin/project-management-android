@@ -72,10 +72,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/logInButton"
+                android:id="@+id/signUpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="buttonClick()"
                 android:text="Log In" />
 
             <Button
