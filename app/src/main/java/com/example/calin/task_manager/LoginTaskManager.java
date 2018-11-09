@@ -42,7 +42,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginTaskManager extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -169,11 +168,9 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 //            focusView = mEmailView;
 //            cancel = true;
 //        }
-
-        boolean abc = false;
         View focusView = null;
 
-        if(abc) {
+        if(false) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
@@ -185,8 +182,36 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             mEmailView.setError("This is not correct");
 
             Map<String, String> parametre = new HashMap<String, String>();
-            HttpUrlConnection con = new HttpUrlConnection(parametre);
-            con.postThread.start();
+
+            parametre.clear();
+            parametre.put("test", "test");
+            HttpUrlConnection userTest = new HttpUrlConnection(parametre, "users/test");
+            userTest.postThread.start();
+            try {
+                userTest.postThread.join();
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("first step done");
+
+            parametre.clear();
+            parametre.put("username", "andi");
+            parametre.put("password", "andi");
+            HttpUrlConnection userLogin = new HttpUrlConnection(parametre, "users/login");
+//            userLogin.postThread.start();
+
+//                if (!userLogin.postThread.isAlive()) {
+//
+//                    GeneralInfo.token = (String) GeneralInfo.response.get("token");
+//
+//                    System.out.println(GeneralInfo.token);
+//
+//                    parametre.clear();
+//                    parametre.put("token", GeneralInfo.token);
+//                    HttpUrlConnection usersGet = new HttpUrlConnection(parametre, "users/get");
+//                    usersGet.getThread.start();
+//                }
         }
     }
 
