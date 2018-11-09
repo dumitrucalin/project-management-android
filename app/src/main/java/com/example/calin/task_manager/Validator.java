@@ -11,24 +11,17 @@ public class Validator {
 
     private static Matcher matcher;
 
-    public Validator() {
-        emailPattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
-        alphaNumericPattern = Pattern.compile(ALPHA_NUMERIC_REGEX, Pattern.CASE_INSENSITIVE);
-    }
-
     public static Boolean emailValidate(String email) {
+        emailPattern = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
         matcher = emailPattern.matcher(email);
         return matcher.matches();
     }
 
     public static Boolean alphaNumericValidate(String string) {
-        matcher = alphaNumericPattern.matcher(string);
-        return matcher.matches();
-    }
-
-    public static Boolean passwordValidate(String password) {
-        matcher = alphaNumericPattern.matcher(password);
-        if (password.length() >= 8) {
+        alphaNumericPattern = Pattern.compile(ALPHA_NUMERIC_REGEX, Pattern.CASE_INSENSITIVE);
+        System.out.println(string);
+        if (string != null) {
+            matcher = alphaNumericPattern.matcher(string);
             return matcher.matches();
         } else {
             return false;
