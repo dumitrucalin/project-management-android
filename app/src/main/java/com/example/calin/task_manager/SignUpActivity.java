@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -84,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         });
 
         Button signUpButton = (Button) findViewById(R.id.sign_up_button);
-        signUpButton.setOnClickListener(new OnClickListener() {
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptSignUp();
