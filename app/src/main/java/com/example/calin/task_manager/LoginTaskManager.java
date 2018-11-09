@@ -83,11 +83,12 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button redirectSignUpButton = (Button)findViewById(R.id.signUpButton);
+
+        redirectSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
+            public void onClick(View v) {
+                startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
             }
         });
 
@@ -145,6 +146,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
      */
     private void attemptLogin() {
 //      TODO: Change "mUserNameView" to "mUserNameView" and "mUserPasswordView" to "mUserPasswordView"
+//      TODO: Change "mEmailView" to "userNameView" and "mPasswordView" to "userPasswordView"
 
         if (mAuthTask != null) {
             return;

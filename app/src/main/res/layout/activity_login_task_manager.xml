@@ -66,6 +66,12 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/signUpButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log In" />
+
+            <Button
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
@@ -78,9 +84,8 @@
                 android:id="@+id/dashboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="buttonClick()"
+                android:onClick=""
                 android:text="dashboard" />
-
         </LinearLayout>
     </ScrollView>
 
