@@ -3,6 +3,7 @@ package com.example.calin.task_manager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -223,7 +224,9 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(userEmail, userPassword);
-            mAuthTask.execute((Void) null);
+            //TODO: de facut legatura cu baza de date cand fac un sign up
+            //mAuthTask.execute((Void) null);
+            startActivity(new Intent(SignUpActivity.this, Dashboard.class));
         }
     }
 
