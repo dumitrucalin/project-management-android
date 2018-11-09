@@ -222,11 +222,11 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 
 //  TODO: Check userName
     private boolean isUserNameValid(String userName) {
-        return true;
+        return Validator.alphaNumericValidate(userName);
     }
 //  TODO: Check userPassword
     private boolean isUserPasswordValid(String userPassword) {
-        return true;
+        return Validator.passwordValidate(userPassword);
     }
 
     /**
