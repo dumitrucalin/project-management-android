@@ -1,4 +1,7 @@
-package com.example.calin.task_manager;
+package taskRoutes;
+
+import com.example.calin.task_manager.GeneralInfo;
+import com.example.calin.task_manager.HttpUrlConnection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +22,8 @@ public class CheckTasks extends TimerTask {
             e.printStackTrace();
         }
 
-        if ((Integer) HttpUrlConnection.response.get("err") == 0) {
-            if ((Boolean) HttpUrlConnection.response.get("tasksModified")) {
+        if ((Integer) checkTasks.response.get("err") == 0) {
+            if ((Boolean) checkTasks.response.get("tasksModified")) {
                 GetTasks();
             }
         } else {
@@ -42,8 +45,8 @@ public class CheckTasks extends TimerTask {
             e.printStackTrace();
         }
 
-        if ((Integer) HttpUrlConnection.response.get("err") == 0) {
-            GeneralInfo.tasks = HttpUrlConnection.response;
+        if ((Integer) getTasks.response.get("err") == 0) {
+            GeneralInfo.tasks = (Map) getTasks.response.get("tasks");
         } else {
 //          TODO: Error for geting the tasks
         }

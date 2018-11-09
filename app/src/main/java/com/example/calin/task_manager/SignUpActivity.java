@@ -29,11 +29,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import userRoutes.SignUp;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -67,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private View loginFormView;
     private EditText userFullNameView;
     private EditText userNameView;
-
+    private CheckBox passwordCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +80,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         // Set up the login form.
         userEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
         userPasswordView = (EditText) findViewById(R.id.password);
         userConfirmPasswordView = (EditText) findViewById(R.id.password2);
         userPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -87,6 +90,20 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                     return true;
                 }
                 return false;
+            }
+        });
+        passwordCheckBox = (CheckBox) findViewById(R.id.check_box_password);
+        passwordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (!isChecked) {
+                    // show password
+                    userPasswordView.setInputType(1);
+                } else {
+                    // hide password
+                    userPasswordView.setInputType(17);
+
+                }
             }
         });
 
@@ -106,12 +123,22 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         progressView = findViewById(R.id.login_progress);
     }
 
+    public void redirectToLogInPage(View v) {
+        startActivity(new Intent(SignUpActivity.this, LoginTaskManager.class));
+    }
+
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
         }
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    public void showPassword() {
+
+        userPasswordView.setVisibility(View.VISIBLE);
+        userConfirmPasswordView.setVisibility(View.VISIBLE);
     }
 
     private boolean mayRequestContacts() {
@@ -177,34 +204,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid userPassword, if the user entered one.
-        if (!isUserPasswordValid(userPassword)) {
-            userPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = userPasswordView;
-            cancel = true;
-        } else if (!isUserNameValid(userName)) {
-            userNameView.setError(getString(R.string.error_invalid_email));
-            focusView = userNameView;
-            cancel = true;
-        }
-
-        // Check for a valid userEmail address.
-        if (TextUtils.isEmpty(userEmail)) {
-            userEmailView.setError(getString(R.string.error_field_required));
-            focusView = userEmailView;
-            cancel = true;
-        } else if (!isEmailValid(userEmail)) {
-            userEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = userEmailView;
-            cancel = true;
-        }
-
-        if(!(userConfirmPassword.equals(userPassword))) {
-            userConfirmPasswordView.setError(getString(R.string.passwords_do_not_match));
-            focusView = userConfirmPasswordView;
-            cancel = true;
-        }
-
         if (TextUtils.isEmpty(userFullName)) {
             userFullNameView.setError(getString(R.string.error_field_required));
             focusView = userFullNameView;
@@ -217,38 +216,56 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             cancel = true;
         }
 
+        if (TextUtils.isEmpty(userEmail)) {
+            userEmailView.setError(getString(R.string.error_field_required));
+            focusView = userEmailView;
+            cancel = true;
+        }
+
+        if (!isUserPasswordValid(userPassword)) {
+            userPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = userPasswordView;
+            cancel = true;
+        } else if(!(userConfirmPassword.equals(userPassword))) {
+            userConfirmPasswordView.setError(getString(R.string.passwords_do_not_match));
+            focusView = userConfirmPasswordView;
+            cancel = true;
+        } else if (!isUserNameValid(userName)) {
+            userNameView.setError(getString(R.string.error_invalid_email));
+            focusView = userNameView;
+            cancel = true;
+        } else if (!isUserEmailValid(userEmail)) {
+            userEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = userEmailView;
+            cancel = true;
+        }
+
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(userEmail, userPassword);
-            //TODO: de facut legatura cu baza de date cand fac un sign up
-            //mAuthTask.execute((Void) null);
-            startActivity(new Intent(SignUpActivity.this, Dashboard.class));
+
+            Boolean signUpSucceed = SignUp.SignUp(userName, userFullName, userPassword, userEmail);
+
+            if (signUpSucceed) {
+                startActivity(new Intent(SignUpActivity.this, Dashboard.class));
+            } else {
+//              TODO: Server error
+            }
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+    private boolean isUserEmailValid(String userEmail) {
+        return Validator.emailValidate(userEmail);
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-    //  TODO: Check userName
     private boolean isUserNameValid(String userName) {
-        return true;
+        return Validator.alphaNumericValidate(userName);
     }
-    //  TODO: Check userPassword
+
     private boolean isUserPasswordValid(String userPassword) {
-        return true;
+        return Validator.alphaNumericValidate(userPassword);
     }
 
     /**
