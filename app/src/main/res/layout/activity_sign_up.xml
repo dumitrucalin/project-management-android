@@ -104,8 +104,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:checked="false"
-                android:clickable="false"
                 android:text="@string/prompt_show_password" />
 
             <android.support.design.widget.TextInputLayout
@@ -124,7 +122,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/username_button"
+                android:id="@+id/sign_up_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

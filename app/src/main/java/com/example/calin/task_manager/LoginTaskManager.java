@@ -101,9 +101,12 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
                 startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    public void redirectToSignUpPage(View v) {
+        startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
     }
 
     private void populateAutoComplete() {
