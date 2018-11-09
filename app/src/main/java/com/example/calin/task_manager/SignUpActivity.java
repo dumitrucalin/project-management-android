@@ -3,13 +3,6 @@ package com.example.calin.task_manager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -35,7 +28,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -183,34 +178,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid userPassword, if the user entered one.
-        if (!isUserPasswordValid(userPassword)) {
-            userPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = userPasswordView;
-            cancel = true;
-        } else if (!isUserNameValid(userName)) {
-            userNameView.setError(getString(R.string.error_invalid_email));
-            focusView = userNameView;
-            cancel = true;
-        }
-
-        // Check for a valid userEmail address.
-        if (TextUtils.isEmpty(userEmail)) {
-            userEmailView.setError(getString(R.string.error_field_required));
-            focusView = userEmailView;
-            cancel = true;
-        } else if (!isEmailValid(userEmail)) {
-            userEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = userEmailView;
-            cancel = true;
-        }
-
-        if(!(userConfirmPassword.equals(userPassword))) {
-            userConfirmPasswordView.setError(getString(R.string.passwords_do_not_match));
-            focusView = userConfirmPasswordView;
-            cancel = true;
-        }
-
         if (TextUtils.isEmpty(userFullName)) {
             userFullNameView.setError(getString(R.string.error_field_required));
             focusView = userFullNameView;
@@ -223,38 +190,74 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             cancel = true;
         }
 
+        if (TextUtils.isEmpty(userEmail)) {
+            userEmailView.setError(getString(R.string.error_field_required));
+            focusView = userEmailView;
+            cancel = true;
+        }
+
+        if (!isUserPasswordValid(userPassword)) {
+            userPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = userPasswordView;
+            cancel = true;
+        } else if(!(userConfirmPassword.equals(userPassword))) {
+            userConfirmPasswordView.setError(getString(R.string.passwords_do_not_match));
+            focusView = userConfirmPasswordView;
+            cancel = true;
+        } else if (!isUserNameValid(userName)) {
+            userNameView.setError(getString(R.string.error_invalid_email));
+            focusView = userNameView;
+            cancel = true;
+        } else if (!isUserEmailValid(userEmail)) {
+            userEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = userEmailView;
+            cancel = true;
+        }
+
+
+
+
+
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(userEmail, userPassword);
             //TODO: de facut legatura cu baza de date cand fac un sign up
-            //mAuthTask.execute((Void) null);
-            startActivity(new Intent(SignUpActivity.this, Dashboard.class));
+
+            Map<String, String> parametre = new HashMap<String, String>();
+
+            parametre.clear();
+            parametre.put("username", userName);
+            parametre.put("fullName", userFullName);
+            parametre.put("password", userPassword);
+            parametre.put("email", userEmail);
+
+            HttpUrlConnection userSignUp = new HttpUrlConnection(parametre, "users/signup");
+            userSignUp.postThread().start();
+
+            try {
+                userSignUp.thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if ((Integer) HttpUrlConnection.response.get("err") == 0) {
+                startActivity(new Intent(SignUpActivity.this, Dashboard.class));
+            }
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+    private boolean isUserEmailValid(String userEmail) {
+        return Validator.emailValidate(userEmail);
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-    //  TODO: Check userName
     private boolean isUserNameValid(String userName) {
-        return true;
+        return Validator.alphaNumericValidate(userName);
     }
-    //  TODO: Check userPassword
+
     private boolean isUserPasswordValid(String userPassword) {
-        return true;
+        return Validator.alphaNumericValidate(userPassword);
     }
 
     /**
