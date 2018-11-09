@@ -5,5 +5,5 @@ import java.util.Map;
 
 public class GeneralInfo {
     public static String token = new String();
-    static Map<String, Object> response = new HashMap<String, Object>();
+    public static Map<String, Object> user = new HashMap<String, Object>();
 }
