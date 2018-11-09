@@ -3,23 +3,21 @@ package com.example.calin.task_manager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,19 +29,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.READ_CONTACTS;
-import static com.example.calin.task_manager.HttpUrlConnection.postThread;
 
 /**
  * A login screen that offers login via email/password.
@@ -63,8 +54,8 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    private AutoCompleteTextView mUserNameView;
+    private EditText mUserPasswordView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -77,11 +68,11 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 
         setContentView(R.layout.activity_login_task_manager);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUserNameView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mUserPasswordView = (EditText) findViewById(R.id.password);
+        mUserPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -92,11 +83,12 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button redirectSignUpButton = (Button)findViewById(R.id.signUpButton);
+
+        redirectSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                attemptLogin();
+            public void onClick(View v) {
+                startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
             }
         });
 
@@ -120,7 +112,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(mUserNameView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -153,40 +145,41 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-//      TODO: Change "mEmailView" to "mUserNameView" and "mPasswordView" to "mUserPasswordView"
+//      TODO: Change "mUserNameView" to "mUserNameView" and "mUserPasswordView" to "mUserPasswordView"
+//      TODO: Change "mEmailView" to "userNameView" and "mPasswordView" to "userPasswordView"
 
         if (mAuthTask != null) {
             return;
         }
 
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        mUserNameView.setError(null);
+        mUserPasswordView.setError(null);
 
-        String userName = mEmailView.getText().toString();
-        String userPassword = mPasswordView.getText().toString();
+        String userName = mUserNameView.getText().toString();
+        String userPassword = mUserPasswordView.getText().toString();
 
         View focusView = null;
         Boolean cancel = false;
 
         if (TextUtils.isEmpty(userPassword)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
+            mUserPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mUserPasswordView;
             cancel = true;
         }
 
         if (TextUtils.isEmpty(userName)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            mUserNameView.setError(getString(R.string.error_field_required));
+            focusView = mUserNameView;
             cancel = true;
         }
 
         if (!isUserPasswordValid(userPassword)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            mUserPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mUserPasswordView;
             cancel = true;
         } else if (!isUserNameValid(userName)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+            mUserNameView.setError(getString(R.string.error_invalid_email));
+            focusView = mUserNameView;
             cancel = true;
         }
 
@@ -213,6 +206,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             if ((Integer) HttpUrlConnection.response.get("err") == 0) {
                 GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
 //              TODO: Redirect to Dashboard
+                        startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
             } else {
 //              TODO: Error message for invalid credentials
             }
@@ -295,7 +289,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
                 new ArrayAdapter<>(LoginTaskManager.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUserNameView.setAdapter(adapter);
     }
 
 
@@ -336,8 +330,8 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                mUserPasswordView.setError(getString(R.string.error_incorrect_password));
+                mUserPasswordView.requestFocus();
             }
         }
 
