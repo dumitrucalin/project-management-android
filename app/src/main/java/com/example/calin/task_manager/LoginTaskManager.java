@@ -92,14 +92,6 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        Button redirectSignUpButton = (Button)findViewById(R.id.signUpButton);
-
-        redirectSignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
-            }
-        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -217,8 +209,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 
             if ((Integer) HttpUrlConnection.response.get("err") == 0) {
                 GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
-//              TODO: Redirect to Dashboard
-//                startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
+                startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
             } else {
 //              TODO: Error message for invalid credentials
             }

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -105,6 +106,10 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
 
         loginFormView = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
+    }
+
+    public void redirectToLogInPage(View v) {
+        startActivity(new Intent(SignUpActivity.this, LoginTaskManager.class));
     }
 
     private void populateAutoComplete() {
