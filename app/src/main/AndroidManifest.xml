@@ -26,8 +26,14 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity
+            android:name=".Dashboard"
+            android:label="@string/title_activity_dashboard" />
+        <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"></activity>
+            android:label="@string/title_activity_sign_up" />
+        <activity
+            android:name=".LoginActivityPrim"
+            android:label="@string/title_activity_login_prim"></activity>
     </application>
 
 </manifest>

@@ -81,6 +81,24 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             }
         });
 
+        Button signInButton = (Button)findViewById(R.id.email_sign_in_button);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptLogin();
+
+            }
+        });
+
+        Button redirectSignUpButton = (Button)findViewById(R.id.signUpButton);
+
+        redirectSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
+            }
+        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -209,11 +227,13 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 
 //  TODO: Check userName
     private boolean isUserNameValid(String userName) {
-        return Validator.alphaNumericValidate(userName);
+        //return Validator.alphaNumericValidate(userName);
+        return true;
     }
 //  TODO: Check userPassword
     private boolean isUserPasswordValid(String userPassword) {
-        return Validator.passwordValidate(userPassword);
+        //return Validator.passwordValidate(userPassword);
+        return true;
     }
 
     /**
