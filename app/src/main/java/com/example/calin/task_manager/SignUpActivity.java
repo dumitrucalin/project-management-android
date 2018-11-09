@@ -30,9 +30,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import userRoutes.SignUp;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -235,36 +235,18 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
             cancel = true;
         }
 
-
-
-
-
         if (cancel) {
             focusView.requestFocus();
         } else {
             showProgress(true);
             mAuthTask = new UserLoginTask(userEmail, userPassword);
-            //TODO: de facut legatura cu baza de date cand fac un sign up
 
-            Map<String, String> parametre = new HashMap<String, String>();
+            Boolean signUpSucceed = SignUp.SignUp(userName, userFullName, userPassword, userEmail);
 
-            parametre.clear();
-            parametre.put("username", userName);
-            parametre.put("fullName", userFullName);
-            parametre.put("password", userPassword);
-            parametre.put("email", userEmail);
-
-            HttpUrlConnection userSignUp = new HttpUrlConnection(parametre, "users/signup");
-            userSignUp.postThread().start();
-
-            try {
-                userSignUp.thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            if ((Integer) HttpUrlConnection.response.get("err") == 0) {
+            if (signUpSucceed) {
                 startActivity(new Intent(SignUpActivity.this, Dashboard.class));
+            } else {
+//              TODO: Server error
             }
         }
     }

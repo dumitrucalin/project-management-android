@@ -29,9 +29,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import userRoutes.Login;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -192,23 +192,9 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
         } else {
             showProgress(true);
 
-            Map<String, String> parametre = new HashMap<String, String>();
+            Boolean loginSucceed = Login.Login(userName, userPassword);
 
-            parametre.clear();
-            parametre.put("username", userName);
-            parametre.put("password", userPassword);
-
-            HttpUrlConnection userLogin = new HttpUrlConnection(parametre, "users/login");
-            userLogin.getThread().start();
-
-            try {
-                userLogin.thread.join();
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            if ((Integer) HttpUrlConnection.response.get("err") == 0) {
-                GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
+            if (loginSucceed) {
                 startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
             } else {
 //              TODO: Error message for invalid credentials
