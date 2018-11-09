@@ -1,5 +1,9 @@
 package com.example.calin.task_manager;
 
+import android.os.StrictMode;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,6 +15,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
 
 class ParameterStringBuilder {
     public static String getParamsString(Map<String, String> params)
@@ -32,79 +37,90 @@ class ParameterStringBuilder {
 }
 
 public class HttpUrlConnection extends Thread {
-    private static final String URL = "http://192.168.0.187:3000/api/v1/users/test";
+    private static final String URL = "http://192.168.0.10:3000/api/v1/";
+    private static String route = "";
     private static Map<String, String> parametre = new HashMap<String, String>();
+    public static Thread thread = new Thread();
+    public static Map<String, Object> response = new HashMap<String, Object>();
 
-    public HttpUrlConnection(Map<String, String> parametre) {
+    public HttpUrlConnection(Map<String, String> parametre, String route) {
         this.parametre = parametre;
+        this.route = route;
     }
 
     // TODO: Read the response in the right form
 
-    static Thread getThread = new Thread(new Runnable() {
-        public void run() {
-            try {
-                URL obj = new URL(URL);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-                con.setRequestMethod("GET");
+    public static Thread getThread() {
+        thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    URL obj = new URL(URL + route);
+                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                    con.setRequestMethod("POST");
 
-                int responseCode = con.getResponseCode();
-                System.out.println("GET Response Code :: " + responseCode);
+                    con.setDoOutput(true);
+                    DataOutputStream out = new DataOutputStream(con.getOutputStream());
+                    out.writeBytes(ParameterStringBuilder.getParamsString(parametre));
+                    out.flush();
+                    out.close();
 
-                if (responseCode == HttpURLConnection.HTTP_OK) { // success
-                    BufferedReader in = new BufferedReader(new InputStreamReader(
-                            con.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
+                    int responseCode = con.getResponseCode();
+                    System.out.println("GET Response Code :: " + responseCode);
 
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
+                    Map<String, Object> responseAsHashMap = new HashMap<String, Object>();
+                    ObjectMapper mapper = new ObjectMapper();
+                    responseAsHashMap = mapper.readValue(con.getInputStream(), Map.class);
+
+                    System.out.println(responseAsHashMap);
+
+                    if ((Integer) responseAsHashMap.get("err") == 0) {
+                        response = responseAsHashMap;
+                    } else {
+                        System.out.println("GET request not worked");
                     }
-                    in.close();
-                } else {
-                    System.out.println("GET request not worked");
+                } catch (IOException e) {
+                    System.out.println("ERROR: ");
+                    System.out.println(e);
                 }
-            } catch(IOException e) {
-                System.out.println("\n\nERROR: ");
-                System.out.println(e);
             }
-        }
-    });
+        });
 
-    static Thread postThread = new Thread(new Runnable() {
-        public void run() {
-            try {
-                URL url = new URL(URL);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("POST");
+        return thread;
+    }
 
-                con.setDoOutput(true);
-                DataOutputStream out = new DataOutputStream(con.getOutputStream());
-                out.writeBytes(ParameterStringBuilder.getParamsString(parametre));
-                out.flush();
-                out.close();
+    public static Thread postThread() {
+        thread = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    URL url = new URL(URL + route);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
 
-                int responseCode = con.getResponseCode();
-                System.out.println("POST Response Code :: " + responseCode);
+                    con.setDoOutput(true);
+                    DataOutputStream out = new DataOutputStream(con.getOutputStream());
+                    out.writeBytes(ParameterStringBuilder.getParamsString(parametre));
+                    out.flush();
+                    out.close();
 
-                if (responseCode == HttpURLConnection.HTTP_OK) { //success
-                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
+                    int responseCode = con.getResponseCode();
+                    System.out.println("POST Response Code :: " + responseCode);
 
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
+                    Map<String, Object> responseAsHashMap = new HashMap<String, Object>();
+                    ObjectMapper mapper = new ObjectMapper();
+                    responseAsHashMap = mapper.readValue(con.getInputStream(), Map.class);
+
+                    if ((Integer) responseAsHashMap.get("err") == 0) {
+                        response = responseAsHashMap;
+                    } else {
+                        System.out.println("GET request not worked");
                     }
-                    in.close();
-
-                    // TODO: Toast for success
-                } else {
-                    System.out.println("POST request not worked");
+                } catch (IOException e) {
+                    System.out.println("ERROR: ");
+                    System.out.println(e);
                 }
-            } catch(IOException e) {
-                System.out.println("\n\nERROR: ");
-                System.out.println(e);
             }
-        }
-    });
+        });
+
+        return thread;
+    }
 }
