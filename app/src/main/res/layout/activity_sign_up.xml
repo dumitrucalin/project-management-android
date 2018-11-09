@@ -100,10 +100,13 @@
             </android.support.design.widget.TextInputLayout>
 
             <CheckBox
-                android:id="@+id/show_password_checkbox"
+                android:id="@+id/check_box_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:checked="true"
+                android:clickable="true"
+                android:password="false"
                 android:text="@string/prompt_show_password" />
 
             <android.support.design.widget.TextInputLayout
