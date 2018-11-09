@@ -217,8 +217,8 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
 
             if ((Integer) HttpUrlConnection.response.get("err") == 0) {
                 GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
-//              TODO: Redirect to Dashboard
-//                startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
+//              TODO: Redirect to dash
+//                //startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
             } else {
 //              TODO: Error message for invalid credentials
             }
