@@ -184,7 +184,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             focusView = mUserNameView;
             cancel = true;
         }
-
+        System.out.println("");
         if (!isUserPasswordValid(userPassword)) {
             mUserPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mUserPasswordView;
@@ -225,15 +225,12 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
         }
     }
 
-//  TODO: Check userName
     private boolean isUserNameValid(String userName) {
-        //return Validator.alphaNumericValidate(userName);
-        return true;
+        return Validator.alphaNumericValidate(userName);
     }
-//  TODO: Check userPassword
+
     private boolean isUserPasswordValid(String userPassword) {
-        //return Validator.passwordValidate(userPassword);
-        return true;
+        return Validator.alphaNumericValidate(userPassword);
     }
 
     /**
