@@ -21,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -219,7 +218,7 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             if ((Integer) HttpUrlConnection.response.get("err") == 0) {
                 GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
 //              TODO: Redirect to Dashboard
-                        startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
+//                startActivity(new Intent(LoginTaskManager.this, Dashboard.class));
             } else {
 //              TODO: Error message for invalid credentials
             }
