@@ -92,14 +92,6 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             }
         });
 
-        Button redirectSignUpButton = (Button)findViewById(R.id.signUpButton);
-
-        redirectSignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginTaskManager.this, SignUpActivity.class));
-            }
-        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
