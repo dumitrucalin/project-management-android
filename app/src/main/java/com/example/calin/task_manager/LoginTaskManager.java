@@ -209,18 +209,22 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
             } catch(InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("this is the second step");
 
-            GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
-            System.out.println(GeneralInfo.token);
+            if ((Integer) HttpUrlConnection.response.get("err") == 0) {
+                GeneralInfo.token = (String) HttpUrlConnection.response.get("token");
+//              TODO: Redirect to Dashboard
+            } else {
+//              TODO: Error message for invalid credentials
+            }
+
         }
     }
 
-//  TODO: Replace this with your own logic
+//  TODO: Check userName
     private boolean isUserNameValid(String userName) {
         return true;
     }
-
+//  TODO: Check userPassword
     private boolean isUserPasswordValid(String userPassword) {
         return true;
     }
