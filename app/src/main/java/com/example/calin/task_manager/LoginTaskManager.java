@@ -35,21 +35,13 @@ import userRoutes.Login;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
+
 public class LoginTaskManager extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 //    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //    StrictMode.setThreadPolicy(policy);
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -130,9 +122,6 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
         return false;
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -143,11 +132,6 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
         }
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
 //      TODO: Change "mUserNameView" to "mUserNameView" and "mUserPasswordView" to "mUserPasswordView"
 //      TODO: Change "mEmailView" to "userNameView" and "mPasswordView" to "userPasswordView"
@@ -291,10 +275,6 @@ public class LoginTaskManager extends AppCompatActivity implements LoaderCallbac
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUserName;
