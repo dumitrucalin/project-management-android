@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -46,7 +47,6 @@ public class Dashboard extends AppCompatActivity {
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -144,6 +144,17 @@ public class Dashboard extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment2, container, false);
+            Button buttonGeneric = (Button)rootView.findViewById(R.id.buttonGenericId);
+
+            buttonGeneric.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //pui ce vrei
+                    //orice vrei sa faci find by id, chestii de genul, te legi de rootView.(etc)
+                    //tot ce tine de instantiere on view, on create, ma anunti
+                    //Ai in fragment2.xml view-ul
+                }
+            });
             return rootView;
         }
     }
