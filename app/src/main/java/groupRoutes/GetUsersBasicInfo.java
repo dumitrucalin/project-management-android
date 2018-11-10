@@ -1,5 +1,6 @@
 package groupRoutes;
 
+import com.example.calin.task_manager.GeneralInfo;
 import com.example.calin.task_manager.HttpUrlConnection;
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class GetUsersBasicInfo {
             }
 
             if ((Integer) getUsersBasicInfo.response.get("err") == 0) {
+                GeneralInfo.usersBasicInfo = (Map) getUsersBasicInfo.response.get("usersBasicInfo");
                 return (Map) getUsersBasicInfo.response.get("usersBasicInfo");
             } else {
                 return null;
