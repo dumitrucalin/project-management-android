@@ -15,25 +15,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     @Override
@@ -53,6 +45,8 @@ public class Dashboard extends AppCompatActivity {
         mSectionsPagerAdapter.addFragment(new Fragmentiii());
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1);
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -88,36 +82,58 @@ public class Dashboard extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+    //TODO - DASHBOARD - Implement global dashboard methods for Spinners/TextViews
+    //
+    ///TODO - FRAGMENT 1 - SETTINGS - Add logout option
+    //User Settings Fragment - Stanga
     public static class Fragmenti extends Fragment{
         public Fragmenti(){
         }
-        public static Fragmenti newInstance1() {
+        public Fragmenti newInstance1() {
             Fragmenti fragment = new Fragmenti();
             return fragment;
         }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+
+        }
+
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment1, container, false);
+            Spinner exitGroup = setSpinner(new String[]{"Group One", "Group Two", "Group Three"},R.id.exitGroupSpinner,rootView);
+            Spinner updateGroup = setSpinner(new String[]{"Group One", "Group Two", "Group Three"},R.id.updateGroupSpinner,rootView);
+            TextView username = setText("Nume",R.id.usernameOutput,rootView,"Username");
+            TextView email = setText("Nume@email.com",R.id.emailOutput,rootView,"Email");;
+            TextView fullname = setText("Nume Full",R.id.fullnameOutput,rootView,"FullName");;
             return rootView;
         }
+        private void setSpinners(){
+            ///TODO - FRAGMENT 1 - SETTINGS - set all spinners from Fragment 1
+
+        }
+        private void setTexts(){
+            ///TODO - FRAGMENT 1 - SETTINGS - set all Texts from Fragment 1
+        }
+        private Spinner setSpinner(String[] items, int id, View view) {
+            Spinner spinnerToSet = view.findViewById(id);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+            spinnerToSet.setAdapter(adapter);
+            return spinnerToSet;
+        }
+
+        private TextView setText(String generic, int id, View view, String Type){
+            TextView textPut = view.findViewById(id);
+            textPut.setText("Your " + Type +" is " +generic);
+            return textPut;
+        }
     }
-    public static class Fragmentiii extends Fragment{
-        public Fragmentiii(){
-        }
-        public static Fragmentiii newInstance1() {
-            Fragmentiii fragment = new Fragmentiii();
-            return fragment;
-        }
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment3, container, false);
-            return rootView;
-        }
-    }
+    ///TODO - FRAGMENT 2 - TASKVIEW - Add Spinner for group select /// Add Users in group (Fullname/Username)
+    ///TODO - FRAGMENT 2 - TASKVIEW - Add Task Panel /// Tasks Received /// Tasks Given
+    ///TODO - FRAGMENT 2 - TASKVIEW - Add Create Group Button
+    //Dashboard segment - Middle
     public static class Fragmentii extends Fragment{
         public Fragmentii(){
         }
@@ -132,9 +148,27 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    //Create Task Fragment - Dreapta
+    ///TODO - FRAGMENT 3 - CREATE TASK - Add "Hello user" /// Add Task Title /// Add input textString /// Add spinner for users + button
+    ///TODO - FRAGMENT 3 - CREATE TASK - Add deadline checkbox + spinner /// Add priority checkbox + spinner
+    ///TODO - FRAGMENT 3 - CREATE TASK - Add Create Task Button /// Add select group button on which to create task
+    public static class Fragmentiii extends Fragment{
+        public Fragmentiii(){
+        }
+        public static Fragmentiii newInstance1() {
+            Fragmentiii fragment = new Fragmentiii();
+            return fragment;
+        }
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment3, container, false);
+            return rootView;
+        }
+    }
 
-        private final List<Fragment> mFragmentList = new ArrayList<>();
+    public static class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        private static final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager manager) {
