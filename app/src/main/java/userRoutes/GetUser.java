@@ -13,7 +13,7 @@ public class GetUser {
         parametre.clear();
         parametre.put("token", GeneralInfo.token);
 
-        HttpUrlConnection userGet = new HttpUrlConnection(parametre, "users/login");
+        HttpUrlConnection userGet = new HttpUrlConnection(parametre, "users/get");
         userGet.getThread().start();
 
         try {

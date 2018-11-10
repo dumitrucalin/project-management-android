@@ -1,14 +1,9 @@
 package com.example.calin.task_manager;
 
-import android.os.StrictMode;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -112,7 +107,7 @@ public class HttpUrlConnection extends Thread {
                     if ((Integer) responseAsHashMap.get("err") == 0) {
                         response = responseAsHashMap;
                     } else {
-                        System.out.println("GET request not worked");
+                        System.out.println("POST request not worked");
                     }
                 } catch (IOException e) {
                     System.out.println("ERROR: ");
