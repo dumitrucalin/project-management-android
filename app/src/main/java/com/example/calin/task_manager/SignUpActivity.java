@@ -3,6 +3,11 @@ package com.example.calin.task_manager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -24,6 +29,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -64,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
     private View loginFormView;
     private EditText userFullNameView;
     private EditText userNameView;
-
+    private CheckBox passwordCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +80,6 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         // Set up the login form.
         userEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
         userPasswordView = (EditText) findViewById(R.id.password);
         userConfirmPasswordView = (EditText) findViewById(R.id.password2);
         userPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -84,6 +90,20 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
                     return true;
                 }
                 return false;
+            }
+        });
+        passwordCheckBox = (CheckBox) findViewById(R.id.check_box_password);
+        passwordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (!isChecked) {
+                    // show password
+                    userPasswordView.setInputType(1);
+                } else {
+                    // hide password
+                    userPasswordView.setInputType(17);
+
+                }
             }
         });
 
@@ -113,6 +133,12 @@ public class SignUpActivity extends AppCompatActivity implements LoaderCallbacks
         }
 
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    public void showPassword() {
+
+        userPasswordView.setVisibility(View.VISIBLE);
+        userConfirmPasswordView.setVisibility(View.VISIBLE);
     }
 
     private boolean mayRequestContacts() {

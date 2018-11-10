@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Dashboard$Fragmenti">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <Spinner
+            android:id="@+id/updateGroupSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/updateGroupButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="121dp" />
+
+        <Button
+            android:id="@+id/changePersonalInfoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_marginTop="127dp"
+            android:text="Change personal info" />
+
+        <TextView
+            android:id="@+id/fullnameOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="97dp"
+            android:text="Your fullname" />
+
+        <TextView
+            android:id="@+id/emailOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_marginTop="55dp"
+            android:text="Your email" />
+
+        <TextView
+            android:id="@+id/usernameOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_marginTop="16dp"
+            android:text="Your username" />
+
+        <Button
+            android:id="@+id/exitGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/exitGroupSpinner"
+            android:layout_alignStart="@+id/changePersonalInfoButton"
+            android:text="Exit group" />
+
+        <Button
+            android:id="@+id/updateGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/changePersonalInfoButton"
+            android:layout_marginBottom="190dp"
+            android:text="Update group" />
+
+        <Spinner
+            android:id="@+id/exitGroupSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="240dp" />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
