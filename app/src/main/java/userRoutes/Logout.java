@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Logout {
-    public static Boolean logout() {
+    public static Boolean Logout() {
         Map<String, String> parametre = new HashMap<String, String>();
 
         parametre.clear();
