@@ -1,5 +1,6 @@
 package com.example.calin.task_manager;
 
+import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,12 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import groupRoutes.DeleteUserGroup;
+import groupRoutes.GetUsersBasicInfo;
+import groupRoutes.UpdateGroup;
+import userRoutes.GetUser;
 
 public class Dashboard extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -33,7 +40,9 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
+        GetUser.GetUser();
+       // System.out.println("pula..........................................");
+        //Map<String, String> user = GetUsersBasicInfo.GetUsersBasicInfo("test");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -103,12 +112,40 @@ public class Dashboard extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment1, container, false);
-            Spinner exitGroup = setSpinner(new String[]{"Group One", "Group Two", "Group Three"},R.id.exitGroupSpinner,rootView);
-            Spinner updateGroup = setSpinner(new String[]{"Group One", "Group Two", "Group Three"},R.id.updateGroupSpinner,rootView);
-            TextView username = setText("Nume",R.id.usernameOutput,rootView,"Username");
-            TextView email = setText("Nume@email.com",R.id.emailOutput,rootView,"Email");;
-            TextView fullname = setText("Nume Full",R.id.fullnameOutput,rootView,"FullName");;
+            System.out.println(GeneralInfo.user);
+            final Spinner exitGroup = setArrayToSpinner((ArrayList<String>)GeneralInfo.user.get("groupNames"),R.id.exitGroupSpinner,rootView);
+            exitGroup.setSelection(0);
+            Spinner updateGroup = setArrayToSpinner((ArrayList<String>)GeneralInfo.user.get("groupNames"),R.id.updateGroupSpinner,rootView);
+            updateGroup.setSelection(0);
+            final Spinner updateGroupUsers = setMapToSpinner ((Map<String,String>)GetUsersBasicInfo.GetUsersBasicInfo(updateGroup.getSelectedItem().toString()),R.id.updateGroupUser,rootView);
+            updateGroupUsers.setSelection(0);
+            TextView username = setText((String)GeneralInfo.user.get("username"),R.id.usernameOutput,rootView,"Username");
+            TextView email = setText((String)GeneralInfo.user.get("email"),R.id.emailOutput,rootView,"Email");;
+            TextView fullname = setText((String)GeneralInfo.user.get("fullName"),R.id.fullnameOutput,rootView,"FullName");;
+            Button exitGroupButton = rootView.findViewById(R.id.exitGroupButton);
+            exitGroupButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    DeleteUserGroup.DeleteUserGroup(exitGroup.getSelectedItem().toString(),(String)GeneralInfo.user.get("username"));
+                }
+
+
+            });
+            Button updateGroupButton = rootView.findViewById(R.id.updateGroupButton);
+            exitGroupButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    UpdateGroup.UpdateGroup(updateGroupUsers.getSelectedItem().toString(),(List<String>)GeneralInfo.user.get("username"));
+                }
+
+
+            });
             return rootView;
+        }
+
+        private void refreshActivity(Activity v){
+            v.finish();
+            startActivity(v.getIntent());
         }
         private void setSpinners(){
             ///TODO - FRAGMENT 1 - SETTINGS - set all spinners from Fragment 1
@@ -117,9 +154,17 @@ public class Dashboard extends AppCompatActivity {
         private void setTexts(){
             ///TODO - FRAGMENT 1 - SETTINGS - set all Texts from Fragment 1
         }
-        private Spinner setSpinner(String[] items, int id, View view) {
+        private Spinner setArrayToSpinner(ArrayList<String> items, int id, View view) {
             Spinner spinnerToSet = view.findViewById(id);
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
+            spinnerToSet.setAdapter(adapter);
+            return spinnerToSet;
+        }
+
+        private Spinner setMapToSpinner(Map<String,String> users, int id, View view) {
+            String[] list=users.keySet().toArray(new String[users.keySet().size()]);
+            Spinner spinnerToSet = view.findViewById(id);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, list);
             spinnerToSet.setAdapter(adapter);
             return spinnerToSet;
         }
@@ -144,6 +189,7 @@ public class Dashboard extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment2, container, false);
+
             Button buttonGeneric = (Button)rootView.findViewById(R.id.buttonGenericId);
 
             buttonGeneric.setOnClickListener(new View.OnClickListener() {
